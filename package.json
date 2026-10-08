@@ -1,5 +1,5 @@
 {
-  "name": "kiy-billiard-tables",
+  "name": "billiard-stars",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.13",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "three": "^0.169.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.0.0",

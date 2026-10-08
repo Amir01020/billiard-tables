@@ -5,5 +5,5 @@
 return [
     'bot_token' => 'PASTE_BOT_TOKEN_HERE',
     'chat_id'   => 'PASTE_CHAT_ID_HERE',
-    'site_name' => 'KIY - бильярдные столы',
+    'site_name' => 'Billiard Stars',
 ];
