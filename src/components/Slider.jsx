@@ -1,10 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from '../lib/motion';
 
-export function Arrows({ onPrev, onNext, index, total }) {
+// Пагинация: точки - неактивные слайды, тире - активный
+export function Dots({ index, total, onGo }) {
+  return (
+    <div className="dots">
+      {Array.from({ length: total }, (_, i) => (
+        <button
+          key={i}
+          className={i === index ? 'is-active' : ''}
+          onClick={() => onGo(i)}
+          aria-label={`Слайд ${i + 1}`}
+          aria-current={i === index}
+        />
+      ))}
+    </div>
+  );
+}
+
+export function Arrows({ onPrev, onNext, index, total, onGo }) {
   return (
     <div className="arrows">
-      {total != null && <span className="arrows__count">{String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span>}
+      {total > 1 && onGo && <Dots index={index} total={total} onGo={onGo} />}
       <button onClick={onPrev} aria-label="Назад"><svg viewBox="0 0 24 24"><path d="M20 12H5m6-6-6 6 6 6" /></svg></button>
       <button onClick={onNext} aria-label="Вперёд"><svg viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6" /></svg></button>
     </div>
@@ -15,23 +32,26 @@ export function Arrows({ onPrev, onNext, index, total }) {
 export default function Slider({ children, className = '', head }) {
   const track = useRef(null);
   const [index, setIndex] = useState(0);
+  const [pages, setPages] = useState(1);
   const state = useRef({ x: 0, max: 0, step: 0 });
 
   useEffect(() => {
     const el = track.current;
     const s = state.current;
+    const go = (x, dur = 0.9) => {
+      s.x = Math.max(-s.max, Math.min(0, x));
+      gsap.to(el, { x: s.x, duration: dur, ease: 'expo.out', overwrite: true });
+      setIndex(Math.round(-s.x / (s.step || 1)));
+    };
     const measure = () => {
       const first = el.children[0];
       if (!first) return;
       const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
       s.step = first.offsetWidth + gap;
       s.max = Math.max(0, el.scrollWidth - el.parentElement.offsetWidth);
+      // сколько "позиций" реально доступно с учётом ширины экрана
+      setPages(Math.ceil(s.max / (s.step || 1)) + 1);
       go(s.x);
-    };
-    const go = (x, dur = 0.9) => {
-      s.x = Math.max(-s.max, Math.min(0, x));
-      gsap.to(el, { x: s.x, duration: dur, ease: 'expo.out', overwrite: true });
-      setIndex(Math.round(-s.x / (s.step || 1)));
     };
     s.go = go;
 
@@ -68,13 +88,14 @@ export default function Slider({ children, className = '', head }) {
     };
   }, []);
 
-  const total = Array.isArray(children) ? children.length : 1;
+  const s = state.current;
   const arrows = (
     <Arrows
-      index={index}
-      total={total}
-      onPrev={() => state.current.go(state.current.x + state.current.step)}
-      onNext={() => state.current.go(state.current.x - state.current.step)}
+      index={Math.min(index, pages - 1)}
+      total={pages}
+      onGo={(i) => s.go(-i * s.step)}
+      onPrev={() => s.go(s.x + s.step)}
+      onNext={() => s.go(s.x - s.step)}
     />
   );
 

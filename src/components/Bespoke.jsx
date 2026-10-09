@@ -52,17 +52,16 @@ export function Universes() {
     <section className="section universes" id="universes">
       <div className="wrap">
         <div className="head head--center">
-          <span className="kicker js-fade">Что мы создаём на заказ</span>
           <h2 className="title js-lines">Каждый стол —<br /><em>единственный</em></h2>
         </div>
         <ul className="grid js-stagger">
           {universes.map((u) => (
             <li key={u.title} className="grid__item" data-cursor="view">
-              <a href="#order">
+              <a href={u.href || '#/builder'}>
                 <div className="grid__img"><img src={u.img} alt={u.title} loading="lazy" draggable="false" /></div>
                 <div className="grid__bg"><LineArt name={u.art} /></div>
                 <h3 className="grid__title">{u.title}</h3>
-                <Cta>Заказать</Cta>
+                <Cta>Собрать</Cta>
               </a>
             </li>
           ))}
@@ -107,7 +106,6 @@ export function Process() {
     <section className="process" id="process" ref={root}>
       <div className="process__track">
         <div className="process__intro">
-          <span className="kicker">Индивидуальный заказ</span>
           <h2 className="title">Как рождается<br /><em>ваш стол</em></h2>
           <p>Пять этапов от первой встречи до первой партии. На каждом из них вы знаете, что происходит с вашим столом.</p>
         </div>

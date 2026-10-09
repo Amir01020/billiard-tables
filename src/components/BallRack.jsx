@@ -58,7 +58,7 @@ export default function BallRack() {
       ctx.beginPath(); ctx.arc(ox, oy, R * 0.52, 0, Math.PI * 2);
       ctx.strokeStyle = gold ? BG : LINE; ctx.lineWidth = 1; ctx.stroke();
       ctx.fillStyle = gold ? BG : LINE;
-      ctx.font = `italic ${Math.round(R * 0.62)}px "Cormorant Garamond", Georgia, serif`;
+      ctx.font = `${Math.round(R * 0.6)}px "Ronsa", "Kornilow", Georgia, serif`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(b.n, ox, oy + 1);
       ctx.restore();

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { site } from '../data';
 import { gsap, getLenis } from '../lib/motion';
 
-export default function Header() {
+export default function Header({ solid: forceSolid = false }) {
   const [hidden, setHidden] = useState(false);
   const [solid, setSolid] = useState(false);
   const [open, setOpen] = useState(false);
@@ -42,7 +42,7 @@ export default function Header() {
     else { tl.current.timeScale(1.6).reverse(); lenis?.start(); }
   }, [open]);
 
-  const cls = ['header', solid && 'is-solid', hidden && !open && 'is-hidden', open && 'is-open'].filter(Boolean).join(' ');
+  const cls = ['header', (solid || forceSolid) && 'is-solid', hidden && !open && 'is-hidden', open && 'is-open'].filter(Boolean).join(' ');
 
   return (
     <>

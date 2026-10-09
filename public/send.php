@@ -19,6 +19,8 @@ $name  = $clean($_POST['name'] ?? '');
 $phone = $clean($_POST['phone'] ?? '');
 $model = $clean($_POST['model'] ?? '');
 $area  = $clean($_POST['area'] ?? '');
+// Конфигурация из конструктора: многострочный текст, лимит больше
+$config = htmlspecialchars(trim(mb_substr((string)($_POST['config'] ?? ''), 0, 3000)), ENT_QUOTES, 'UTF-8');
 
 // Телефон обязателен всегда; имя - если поле есть в форме
 if (strlen(preg_replace('/\D/', '', $phone)) < 9 || (isset($_POST['name']) && $name === '')) {
@@ -31,6 +33,7 @@ if ($name !== '')  $lines[] = "<b>Имя:</b> {$name}";
 $lines[] = "<b>Телефон:</b> {$phone}";
 if (isset($_POST['model'])) $lines[] = '<b>Модель:</b> ' . ($model !== '' ? $model : 'не выбрана');
 if ($area !== '')  $lines[] = "<b>Площадь помещения:</b> {$area} м²";
+if ($config !== '') { $lines[] = ''; $lines[] = '<b>Конфигурация стола:</b>'; $lines[] = $config; }
 $lines[] = '';
 $lines[] = '<i>' . date('d.m.Y H:i') . '</i>';
 

@@ -20,9 +20,11 @@ export function initSmoothScroll() {
   // якорные ссылки
   const onClick = (e) => {
     const a = e.target.closest('a[href^="#"]');
-    if (!a || a.getAttribute('href').length < 2) return;
-    const el = document.querySelector(a.getAttribute('href'));
-    if (!el) return;
+    const href = a?.getAttribute('href');
+    // "#/..." - переходы между страницами, их обрабатывает роутер
+    if (!href || href.length < 2 || href.startsWith('#/')) return;
+    const el = document.querySelector(href);
+    if (!el) return; // секции нет на этой странице - роутер вернёт на главную
     e.preventDefault();
     lenis.scrollTo(el, { offset: -70 });
   };

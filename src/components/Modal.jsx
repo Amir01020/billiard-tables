@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export default function Modal({ open, onClose, eyebrow, title, children }) {
+export default function Modal({ open, onClose, title, children }) {
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => e.key === 'Escape' && onClose();
@@ -14,7 +14,6 @@ export default function Modal({ open, onClose, eyebrow, title, children }) {
       <div className="modal__overlay" onClick={onClose} />
       <div className="modal__box">
         <button className="modal__close" onClick={onClose} aria-label="Закрыть">&times;</button>
-        {eyebrow && <span className="eyebrow">{eyebrow}</span>}
         <h3 className="modal__title">{title}</h3>
         {children}
       </div>
